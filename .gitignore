@@ -2,6 +2,7 @@
 .pdm.toml
 __pypackages__/
 ***.egg-info/
+__pycache__/
 
 # ENV
 .env
