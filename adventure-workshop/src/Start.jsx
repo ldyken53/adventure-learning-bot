@@ -15,7 +15,7 @@ class Start extends Component {
           update={this.props.updateGenre}
         />
         <br />
-        {this.props.genre !== "" ? (
+        {this.props.genre !== "Pick A Genre..." ? (
           <Link className="bg-blue-900 p-2 rounded" id="intro" to={"/intro"}>
             Go onto intro!
           </Link>
