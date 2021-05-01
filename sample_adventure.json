@@ -1,23 +1,17 @@
 {
-    "genre_id": "<UUID>",
-    "name": "Our Solar System",
-    "description": "A guided journey through our neighborhood of space.",
-    "creator": "Jan Foksinski",
-    "paths": [
+  "genre_id": "<UUID>",
+  "name": "Our Solar System",
+  "description": "A guided journey through our neighborhood of space.",
+  "creator": "Jan Foksinski",
+  "paths": [
+    {
+      "name": "The Sun",
+      "text": "Our journey of the solar system begins with our Sun. Did you know that the Sun is actually a star? The Sun also keeps all of the planets in order using a force called gravity.\nDo you want to:",
+      "embeds": {},
+      "options": [
         {
-            "name": "The Sun",
-            "text": "Our journey of the solar system begins with our Sun. Did you know that the Sun is actually a star? The Sun also keeps all of the planets in order using a force called gravity.\nDo you want to:",
-            "embeds": {},
-            "options": [
-                {
-                    "text": "Learn about Gravity",
-                    "dest": 1
-                },
-                {
-                    "text": "Move on to Mercury",
-                    "dest": 2
-                }
-            ]
+          "text": "Learn about Gravity",
+          "dest": 1
         },
         {
           "text": "Move on to Mercury",
