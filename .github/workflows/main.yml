@@ -20,6 +20,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./adventure-workshop
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -46,4 +49,4 @@ jobs:
           project: $GCLOUD_DEFAULT_PROJECT
           
       - name: Deploy to GAE
-        run: cd adventure-workshop && gcloud app deploy -q
+        run: gcloud app deploy -q
