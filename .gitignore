@@ -1,0 +1,7 @@
+# PDM
+.pdm.toml
+__pypackages__/
+***.egg-info/
+
+# ENV
+.env

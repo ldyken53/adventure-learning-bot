@@ -1,0 +1,26 @@
+[project]
+name = "adventure_learning_bot"
+version = "0.0.1"
+description = "A cool bot that lets kids enjoy educational text-based adventures"
+authors = [
+    {name = "Cameron Wood", email = "cwood611@uab.edu"},
+    {name = "Elijah Sink", email = "theminorprofit@gmail.com"},
+    {name = "Jan Foksinski", email = "jkf@uab.edu"},
+    {name = "Landon Dyken", email = "ldyken53@gmail.com"},
+]
+dependencies = [
+    "discord-py-slash-command~=1.1",
+]
+requires-python = ">=3.9"
+dynamic = ["classifiers"]
+license = {text = "MIT"}
+
+[project.urls]
+homepage = ""
+
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
+
+[tool]
+[tool.pdm]
