@@ -1,6 +1,6 @@
 # STL
-import os
-import random
+import os, json, asyncio
+from typing import Dict
 
 # PDM
 import discord
@@ -25,6 +25,12 @@ global_choices = [
 ]
 
 
+num_to_emoji = {
+    1: '1️⃣ ',
+    2: '2️⃣ ',
+    3: '3️⃣ ',
+    4: '4️⃣ '
+}
 
 
 @bot.event
@@ -69,6 +75,36 @@ async def poll(ctx: SlashContext) -> None:
     await msg.add_reaction("2️⃣")
     await msg.add_reaction("3️⃣")
     await msg.add_reaction("4️⃣")
+
+
+@slash.slash(name="start-test", guild_ids=[837844953790808074])
+async def start(ctx: SlashContext) -> None:
+    f = open("../sample_adventure.jsonc")
+    paths = json.loads(f.read())
+    await ctx.send(f"Get ready to Learnabot \'{paths['name']}\': {paths['description']}!")
+    await asyncio.sleep(0.5)
+    dest = await handle_path(ctx, paths["paths"][0])
+    while(dest is not None):
+        dest = await handle_path(ctx, paths["paths"][dest])
+    await ctx.channel.send(f"You've reached the end of \'{paths['name']}\'! Good job!")
+    
+
+async def handle_path(ctx: SlashContext, path: Dict):
+
+    def handle_option(m):
+        return m.content in [option["text"] for option in path["options"]]
+
+    await ctx.channel.send(path["text"])
+    if path["options"]:
+        option_msg = ""
+        for i in range(len(path["options"])):
+            option_msg += num_to_emoji[i+1] + path["options"][i]["text"] + '\n'
+        await asyncio.sleep(0.5)
+        await ctx.channel.send(option_msg)
+        msg = await bot.wait_for('message', check=handle_option)
+        await msg.add_reaction('👍')
+        text_to_dest = {option["text"]: option["dest"] for option in path["options"]}
+        return text_to_dest[msg.content]
 
 
 def start() -> None:
