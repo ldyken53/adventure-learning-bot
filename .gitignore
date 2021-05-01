@@ -5,3 +5,6 @@ __pypackages__/
 
 # ENV
 .env
+
+# VSCODE
+.vscode/
