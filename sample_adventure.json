@@ -1,5 +1,5 @@
-// WHAT TO POST TO THE API
 {
+    "genre_id": "<UUID>",
     "name": "Our Solar System",
     "description": "A guided journey through our neighborhood of space.",
     "creator": "Jan Foksinski",
@@ -11,7 +11,7 @@
             "options": [
                 {
                     "text": "Learn about Gravity",
-                    "dest": 1 // dest specifies the index of the node that the option leads to
+                    "dest": 1
                 },
                 {
                     "text": "Move on to Mercury",
