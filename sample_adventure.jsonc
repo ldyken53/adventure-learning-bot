@@ -45,7 +45,7 @@
                 },
                 {
                     "text": "Move on to Venus",
-                    "dest": null
+                    "dest": 4
                 }
             ]
         },
@@ -60,9 +60,15 @@
                 },
                 {
                     "text": "Go to venus",
-                    "dest": null
+                    "dest": 4
                 }
             ]
+        },
+        {
+            "name": "Venus",
+            "text": "Venus is not the last planet in the solar system, but it's where this journey ends. Have fun!",
+            "embeds": {},
+            "options": []
         }
     ]
 }
