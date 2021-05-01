@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { GenreOptions } from "./GenreOptions.js";
 
 class Start extends Component {
   constructor(props) {
@@ -8,7 +9,11 @@ class Start extends Component {
   render() {
     return (
       <div>
-        <h1>Hello World</h1>
+        <h1>
+          Lets start with selecting what category this adventure will be under
+        </h1>
+        <h2>Please select one of the options below:</h2>
+        <GenreOptions />
       </div>
     );
   }
