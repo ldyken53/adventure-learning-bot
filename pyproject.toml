@@ -27,3 +27,4 @@ build-backend = "pdm.pep517.api"
 [tool.pdm]
 [tool.pdm.scripts]
 _.env_file = ".env"
+start = "python bot.py"
