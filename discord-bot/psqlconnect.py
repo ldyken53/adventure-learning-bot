@@ -11,14 +11,13 @@ LOG = logging.getLogger(__name__)
 
 
 def connect_from_env():
-    kwargs = dict()
-
-    kwargs["username"] = os.getenv("PG_USER")
-    kwargs["password"] = os.getenv("PG_USER")
-    kwargs["host"] = os.getenv("PG_HOST")
+    kwargs = {
+        "user": os.getenv("PG_USER"),
+        "password": os.getenv("PG_PASSWORD"),
+        "host": os.getenv("PG_HOST"),
+    }
 
     return psycopg2.connect(**kwargs, cursor_factory=DictCursor)
-
 
 
 def database_execute(query: str):
@@ -27,8 +26,8 @@ def database_execute(query: str):
     LOG.info("connetion established")
     conn.close()
 
-database_execute("something")
-    
 
-
-
+if __name__ == "__main__":
+    print("Testing database connection...")
+    database_execute("something")
+    print("Success!")
