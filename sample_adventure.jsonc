@@ -1,8 +1,8 @@
 // WHAT TO POST TO THE API
 {
-    "name": "Your Adventure's Name",
-    "description": "Optional Description",
-    "creator": "Creator's Name (or 'Anonymous')",
+    "name": "Our Solar System",
+    "description": "A guided journey through our neighborhood of space.",
+    "creator": "Jan Foksinski",
     "paths": [
         {
             "name": "The Sun",
