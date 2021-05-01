@@ -10,6 +10,7 @@ authors = [
 ]
 dependencies = [
     "discord-py-slash-command~=1.1",
+    "discord.py~=1.7",
 ]
 requires-python = ">=3.9"
 dynamic = ["classifiers"]
@@ -24,3 +25,5 @@ build-backend = "pdm.pep517.api"
 
 [tool]
 [tool.pdm]
+[tool.pdm.scripts]
+_.env_file = ".env"
