@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { Start } from "./Start.jsx";
 import { Intro } from "./Intro.jsx";
-import { StoryBuilder } from "./StoryBuilder.js";
+import { StoryBuilder } from "./StoryBuilder/StoryBuilder.jsx";
 import "./App.css";
 
 class App extends Component {

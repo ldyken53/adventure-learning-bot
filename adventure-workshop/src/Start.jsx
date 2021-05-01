@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { GenreOptions } from "./GenreOptions.js";
+import { GenreOptions } from "./GenreOptions.jsx";
 import { Link } from "react-router-dom";
 
 class Start extends Component {
