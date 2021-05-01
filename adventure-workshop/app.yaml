@@ -9,13 +9,3 @@ handlers:
   - url: /(.*)
     static_files: build/\1
     upload: build/(.*)
-
-skip_files:
-  - ^(.*/)?#.*#$
-  - ^(.*/)?.*~$
-  - ^(.*/)?.*\.py[co]$
-  - ^(.*/)?.*/RCS/.*$
-  - ^(.*/)?\..*$
-  - ^(.*/)?node_modules$
-  - ^(.*/)?src$
-  - ^(.*/)?public$
