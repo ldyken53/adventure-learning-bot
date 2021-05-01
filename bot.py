@@ -44,6 +44,17 @@ async def reply(ctx: SlashContext, *args) -> None:
     await ctx.send(content="replying...")
 
 
+@slash.slash(name="poll", guild_ids=[837844953790808074])
+async def poll(ctx: SlashContext) -> None:
+    msg = await ctx.send(
+        content="POLL: \n :one: \n :two: \n :three: \n :four: \n"
+    )
+    await msg.add_reaction('1️⃣')
+    await msg.add_reaction('2️⃣')
+    await msg.add_reaction('3️⃣')
+    await msg.add_reaction('4️⃣')
+
+
 def start() -> None:
     token = os.getenv("DISCORD_BOT_TOKEN")
     bot.run(token)
