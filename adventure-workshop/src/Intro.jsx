@@ -27,6 +27,7 @@ class Intro extends Component {
               value={name}
               onChange={updateTitle}
               className="text-black text-3xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
+              // eslint-disable-next-line
               placeholder={"The Greatest" + (" " + genre) + " Adventure"}
             />
           </div>
@@ -61,6 +62,7 @@ class Intro extends Component {
             onChange={updateDesc}
             className="text-black text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
             placeholder={
+              // eslint-disable-next-line
               "A guided tour into the field of" + (" " + genre) + " ..."
             }
           />
@@ -70,7 +72,6 @@ class Intro extends Component {
   }
 
   render() {
-    const { genre } = this.props;
     return <div>{this.displayForm()}</div>;
   }
 }
