@@ -6,6 +6,7 @@ class Intro extends Component {
     super(props);
     this.displayForm = this.displayForm.bind(this);
     this.displayDesc = this.displayDesc.bind(this);
+    this.displayLink = this.displayLink.bind(this);
   }
 
   displayForm() {
@@ -67,7 +68,21 @@ class Intro extends Component {
             }
           />
         </div>
+        {this.displayLink()}
       </div>
+    ) : null;
+  }
+
+  displayLink() {
+    const { description } = this.props;
+    return description !== "" ? (
+      <Link
+        className="bg-blue-900 p-2 rounded"
+        id="story-builder"
+        to={"/story-builder"}
+      >
+        Let's Make a Story!
+      </Link>
     ) : null;
   }
 

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { Start } from "./Start.jsx";
 import { Intro } from "./Intro.jsx";
+import { StoryBuilder } from "./StoryBuilder.js";
 import "./App.css";
 
 class App extends Component {
@@ -81,6 +82,12 @@ class App extends Component {
                     updateDesc={this.updateDesc}
                   />
                 )}
+              />
+              <Route
+                exact
+                key="story-builder"
+                path="/story-builder"
+                render={(props) => <StoryBuilder />}
               />
               <Redirect to="/home" />
             </Switch>
