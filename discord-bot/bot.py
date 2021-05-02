@@ -1,5 +1,5 @@
 # STL
-import os, json, asyncio
+import os, json, asyncio, requests
 from typing import Dict
 
 # PDM
@@ -8,22 +8,32 @@ from discord.ext import commands
 from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash import SlashCommand, SlashContext
 
-# LOCAL
-from psqlconnect import database_fetch
 
 bot = commands.Bot(command_prefix="!")
 slash = SlashCommand(bot, sync_commands=True)
-num_to_emoji = {1: "1️⃣", 2: "2️⃣", 3: "3️⃣", 4: "4️⃣"}
+num_emoji = {0: "0️⃣", 1: "1️⃣", 2: "2️⃣", 3: "3️⃣", 4: "4️⃣", 5: "5️⃣", 6: "6️⃣", 7: "7️⃣", 8: "8️⃣", 9: "9️⃣"}
+
+def num_to_emoji(num):
+    emoji = ""
+    while True:
+        emoji = num_emoji[num%10] + emoji
+        num = num // 10
+        if not num:
+            break
+    return emoji
+
 
 STARTING_NODE = "00000000-0000-0000-0000-000000000000"
 
 
 def fetch_stories():
-    # records = database_fetch("SELECT * FROM adventure;", ())
-    # print(records)
-    f = open("../sample_adventure.json")
-    paths = json.loads(f.read())
-    return [paths]
+    r = requests.get('https://adventure-api-57rkjmf5la-uc.a.run.app/get-adventures')
+    return json.loads(r.text)
+
+
+def fetch_genres():
+    r = requests.get('https://adventure-api-57rkjmf5la-uc.a.run.app/get-genres')
+    return json.loads(r.text)
 
 
 async def select_story(ctx: SlashContext, stories: list) -> dict:
@@ -31,8 +41,8 @@ async def select_story(ctx: SlashContext, stories: list) -> dict:
     stream = "Please select an adventure: \n"
     for index, story in enumerate(stories):
         index += 1
-        stream += f"{index}.) {story['name']}\n\t by: {story['creator']}\n\n"
-        responses.update(dict.fromkeys([story["name"], str(index)], index - 1))
+        stream += f"{num_to_emoji(index)} {story['name']}\n\t by: {story['creator']}\n\n"
+        responses.update(dict.fromkeys([story["name"], str(index), num_to_emoji(index)], index - 1))
     await ctx.send(stream)
 
     def handle_response(m):
@@ -48,25 +58,16 @@ async def on_ready():
     print("We have logged in as {0.user}".format(bot))
 
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-
-    if message.content.startswith("$hello"):
-        await message.channel.send("Hello!")
-
-
 @slash.slash(name="start", description="Begin your adventure!", guild_ids=[837844953790808074])
 async def start(ctx: SlashContext) -> None:
     paths = fetch_stories()
     story = await select_story(ctx, paths)
     await ctx.send(f"You selected: {story['name']}")
     await ctx.send(
-        f"Would you like to Learnabot '{story['name']}' {num_to_emoji[1]} solo or {num_to_emoji[2]} together?"
+        f"Would you like to Learnabot '{story['name']}' {num_to_emoji(1)} solo or {num_to_emoji(2)} together?"
     )
-    together_responses = dict.fromkeys(["solo", "1", num_to_emoji[1]], False)
-    together_responses.update(dict.fromkeys(["together", "2", num_to_emoji[2]], True))
+    together_responses = dict.fromkeys(["solo", "1", num_to_emoji(1)], False)
+    together_responses.update(dict.fromkeys(["together", "2", num_to_emoji(2)], True))
 
     def handle_together(m):
         return together_responses.get(m.content) is not None
@@ -93,11 +94,11 @@ async def handle_path(ctx: SlashContext, path: Dict, together: bool):
         for i in range(len(path["options"])):
             response_to_dest.update(
                 dict.fromkeys(
-                    [path["options"][i]["text"], str(i + 1), num_to_emoji[i + 1]],
+                    [path["options"][i]["text"], str(i + 1), num_to_emoji(i + 1)],
                     path["options"][i]["dest"],
                 )
             )
-            option_msg += num_to_emoji[i + 1] + " " + path["options"][i]["text"] + "\n"
+            option_msg += num_to_emoji(i + 1) + " " + path["options"][i]["text"] + "\n"
 
         def handle_option(m):
             return response_to_dest.get(m.content) is not None
@@ -109,7 +110,7 @@ async def handle_path(ctx: SlashContext, path: Dict, together: bool):
         msg = await ctx.channel.send(option_msg)
         if together:
             for i in range(len(path["options"])):
-                await msg.add_reaction(num_to_emoji[i + 1])
+                await msg.add_reaction(num_to_emoji(i + 1))
             await ctx.channel.send("Send 'END POLL' to end the poll and take the most popular path")
             await bot.wait_for("message", check=handle_together)
             cache_msg = discord.utils.get(bot.cached_messages, id=msg.id) 
