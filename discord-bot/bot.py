@@ -39,22 +39,6 @@ async def learn(ctx: SlashContext) -> None:
     await ctx.send(content="What would you like to learn?")
 
 
-# @slash.slash(name="reply",
-#             guild_ids=[837844953790808074],
-#             description="give a response    ",
-#             options=[
-#                 create_option(
-#                     name="options",
-#                     description="Please pick an option",
-#                     option_type=3,
-#                     required=True,
-#                     choices=[create_choice(**d) for d in global_choices],
-#                 )
-#             ])
-# async def reply(ctx: SlashContext, options) -> None:
-#     await ctx.send(content=f"Wow, you actually chose {options}? :(")
-
-
 @slash.slash(name="poll", guild_ids=[837844953790808074])
 async def poll(ctx: SlashContext) -> None:
     msg = await ctx.send(content="POLL: \n :one: \n :two: \n :three: \n :four: \n")

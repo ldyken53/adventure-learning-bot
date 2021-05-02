@@ -16,14 +16,11 @@ def connect_from_env():
         "password": os.getenv("PG_PASSWORD"),
         "host": os.getenv("PG_HOST"),
     }
-
     return psycopg2.connect(**kwargs, cursor_factory=DictCursor)
 
 
 def database_execute(query: str):
-    LOG.info("starting connection")
     conn = connect_from_env()
-    LOG.info("connetion established")
     conn.close()
 
 
