@@ -43,7 +43,7 @@ async def select_story(ctx: SlashContext, stories: list) -> dict:
         index += 1
         stream += f"{num_to_emoji(index)} {story['name']}\n\t by: {story['creator']}\n\n"
         responses.update(dict.fromkeys([story["name"], str(index), num_to_emoji(index)], index - 1))
-    await ctx.send(stream)
+    await ctx.channel.send(stream)
 
     def handle_response(m):
         return responses.get(m.content) is not None
@@ -83,11 +83,11 @@ async def start(ctx: SlashContext) -> None:
     if not paths:
         embed = discord.Embed()
         embed.description = "Sadly no adventures have been made in this genre yet. Check again later, or make your own [here!](https://directed-beacon-307320.uc.r.appspot.com/home)"
-        await ctx.send(embed=embed)
+        await ctx.channel.send(embed=embed)
         return
     story = await select_story(ctx, paths)
-    await ctx.send(f"You selected: {story['name']}")
-    await ctx.send(
+    await ctx.channel.send(f"You selected: {story['name']}")
+    await ctx.channel.send(
         f"Would you like to Learnabot '{story['name']}' {num_to_emoji(1)} solo or {num_to_emoji(2)} together?"
     )
     together_responses = dict.fromkeys(["solo", "1", num_to_emoji(1)], False)
@@ -98,7 +98,7 @@ async def start(ctx: SlashContext) -> None:
 
     msg = await bot.wait_for("message", check=handle_together)
     together = together_responses[msg.content]
-    await ctx.send(
+    await ctx.channel.send(
         f"Get ready to Learnabot '{story['name']}': {story['description']}{' together' if together else ''}!"
     )
     await asyncio.sleep(0.5)
