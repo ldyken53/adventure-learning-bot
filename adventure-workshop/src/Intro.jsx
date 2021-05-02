@@ -7,6 +7,7 @@ class Intro extends Component {
     this.displayForm = this.displayForm.bind(this);
     this.displayDesc = this.displayDesc.bind(this);
     this.displayLink = this.displayLink.bind(this);
+    this.displayCreator = this.displayCreator.bind(this);
   }
 
   displayForm() {
@@ -44,6 +45,7 @@ class Intro extends Component {
       </div>
     );
   }
+  
   displayDesc() {
     const { genre, name, description, updateDesc } = this.props;
     return name !== "" ? (
@@ -68,8 +70,37 @@ class Intro extends Component {
             }
           />
         </div>
-        {this.displayLink()}
+        {this.displayCreator()}
       </div>
+    ) : null;
+  }
+
+  displayCreator() {
+    const { description, creator, updateCreator } = this.props;
+    return description !== "" ? (
+      <>
+        <div className="py-2 my-6">
+          <label
+            htmlFor="name"
+            className="block p-2 text-3xl font-medium text-white"
+          >
+            Optional: Author your work
+          </label>
+          <div className="relative rounded-md shadow-sm">
+            <input
+              type="text"
+              name="creator"
+              id="creator"
+              value={creator}
+              onChange={updateCreator}
+              className="text-black text-3xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
+              // eslint-disable-next-line
+              placeholder={"(e.g. John Smith)"}
+            />
+          </div>
+        </div>
+        {this.displayLink()}
+      </>
     ) : null;
   }
 
@@ -77,7 +108,7 @@ class Intro extends Component {
     const { description } = this.props;
     return description !== "" ? (
       <Link
-        className="p-3 bg-indigo-600 p-2 rounded-md"
+        className="p-3 bg-indigo-600 rounded-md"
         id="story-builder"
         to={"/story-builder"}
       >

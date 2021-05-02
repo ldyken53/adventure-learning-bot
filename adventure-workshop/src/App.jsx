@@ -19,16 +19,20 @@ class App extends Component {
       genres: [],
       name: "",
       description: "",
+      creator: "",
     };
     this.updateGenre = this.updateGenre.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.updateDesc = this.updateDesc.bind(this);
+    this.updateCreator = this.updateCreator.bind(this);
   }
 
   updateGenre(g) {
     this.setState({ genre: g });
   }
-
+  updateCreator(event) {
+    this.setState({ creator: event.target.value });
+  }
   updateTitle(event) {
     this.setState({ name: event.target.value });
   }
@@ -43,7 +47,13 @@ class App extends Component {
   }
 
   render() {
-    const { genre, name, description, genres } = this.state;
+    const {
+      genre,
+      name,
+      description,
+      genres,
+      creator,
+    } = this.state;
     return (
       <Router basename="/">
         <div className="App">
@@ -91,8 +101,10 @@ class App extends Component {
                     genre={genre}
                     name={name}
                     description={description}
+                    creator={creator}
                     updateTitle={this.updateTitle}
                     updateDesc={this.updateDesc}
+                    updateCreator={this.updateCreator}
                   />
                 )}
               />
@@ -105,6 +117,7 @@ class App extends Component {
                     name={name}
                     description={description}
                     genre={genre.id}
+                    creator={creator}
                   />
                 )}
               />

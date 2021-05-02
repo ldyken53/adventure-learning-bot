@@ -37,11 +37,12 @@ class StoryBuilder extends Component {
   }
 
   exportStory() {
-    const { name, description, genre } = this.props;
+    const { name, description, genre, creator } = this.props;
     return {
       genre_id: genre,
       name: name,
       description: description,
+      creator: creator,
       paths: this.state.paths,
     };
   }
