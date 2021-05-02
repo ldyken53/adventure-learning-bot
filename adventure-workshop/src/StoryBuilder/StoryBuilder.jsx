@@ -57,6 +57,8 @@ class StoryBuilder extends Component {
   updatePath = (path, key) => {
     const newPaths = { ...this.state.paths };
     newPaths[key] = path;
+    console.log(path);
+    console.log(key)
     this.setState({ paths: newPaths });
   };
 
@@ -69,7 +71,9 @@ class StoryBuilder extends Component {
               key={i}
               obj_key={obj_key}
               path={path}
-              setPath={(path) => this.updatePath(path, obj_key)}
+              setPath={(path) => {
+                this.updatePath(path, obj_key);
+              }}
             />
           ))}
         </PathCardsContext.Provider>
@@ -103,7 +107,6 @@ const PathCard = ({ obj_key, path, setPath }) => {
         />
       </div>
       <div className="p-1 flex-col">
-        <label className="text-grey p-1">Links</label>
         {path.options.map((option, i) => (
           <PathLink
             key={i}
@@ -122,11 +125,12 @@ const PathCard = ({ obj_key, path, setPath }) => {
           />
         ))}
         <button
+          className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() =>
             setPath({ ...path, options: [...path.options, LINK_TEMPLATE] })
           }
         >
-          + Add Link +
+          Add Link
         </button>
       </div>
     </div>
@@ -157,7 +161,7 @@ const PathLink = ({ index, link, setLink, delLink }) => {
           />
         </div>
       </div>
-      <button onClick={delLink()}>Remove Link</button>
+      <button onClick={() => delLink()}>Remove Link</button>
     </div>
   );
 };
