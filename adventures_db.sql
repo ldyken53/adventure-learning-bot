@@ -2,6 +2,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS genre (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    emoji varchar(4) DEFAULT '❓',
     name text NOT NULL,
     description TEXT NOT NULL
 );
@@ -16,11 +17,11 @@ CREATE TABLE IF NOT EXISTS adventure (
     paths jsonb NOT NULL
 );
 
-INSERT INTO genre (name, description) VALUES ('math', 'The beautiful abstract structures of the universe.');
-INSERT INTO genre (name, description) VALUES ('science', 'The world''s mysteries, explored one careful question at a time.');
-INSERT INTO genre (name, description) VALUES ('literature', 'The wonders of the creative human mind expressed through written word.');
-INSERT INTO genre (name, description) VALUES ('history', 'How did we get here?');
-INSERT INTO genre (name, description) VALUES ('language', 'The expression of thought across generation and culture.');
+INSERT INTO genre (name, emoji, description) VALUES ('math',        '🧮', 'The beautiful abstract structures of the universe.');
+INSERT INTO genre (name, emoji, description) VALUES ('science',     '🔬', 'The world''s mysteries, explored one careful question at a time.');
+INSERT INTO genre (name, emoji, description) VALUES ('literature',  '📚', 'The wonders of the creative human mind expressed through written word.');
+INSERT INTO genre (name, emoji, description) VALUES ('history',     '🌎', 'How did we get here?');
+INSERT INTO genre (name, emoji, description) VALUES ('language',    '🗣', 'The expression of thought across generation and culture.');
 
 INSERT INTO adventure (
         genre_id, 
