@@ -1,4 +1,6 @@
 import React, { Component, useContext } from "react";
+import { v4 as uuid4 } from "uuid";
+import { Selector } from "../Selector.jsx";
 // import { Link } from "react-router-dom";
 
 const STORY_TEMPLATE = {
@@ -6,7 +8,7 @@ const STORY_TEMPLATE = {
   name: "",
   description: "",
   creator: "",
-  paths: [],
+  paths: {},
 };
 
 const PATH_TEMPLATE = {
@@ -29,31 +31,31 @@ class StoryBuilder extends Component {
   }
 
   addPath = (path) => {
-    this.setState({ paths: [...this.state.paths, path] });
+    this.setState({ paths: { ...this.state.paths, [uuid4()]: path } });
   };
 
-  removePath = (index) => {
-    const newPaths = [...this.state.paths];
-    newPaths.splice(index, 1);
+  removePath = (key) => {
+    const newPaths = { ...this.state.paths };
+    delete newPaths[key];
     this.setState({ paths: newPaths });
   };
 
-  updatePath = (path, index) => {
-    const newPaths = [...this.state.paths];
-    newPaths.splice(index, 1, path);
+  updatePath = (path, key) => {
+    const newPaths = { ...this.state.paths };
+    newPaths[key] = path;
     this.setState({ paths: newPaths });
   };
 
   render() {
     return (
       <div>
-        Howdy
         <PathCardsContext.Provider value={this.state.paths}>
-          {Object.entries(this.state.paths).map(([id, path], i) => (
+          {Object.entries(this.state.paths).map(([obj_key, path], i) => (
             <PathCard
-              index={i}
+              key={i}
+              obj_key={obj_key}
               path={path}
-              setPath={(path) => this.updatePath(path, i)}
+              setPath={(path) => this.updatePath(path, obj_key)}
             />
           ))}
         </PathCardsContext.Provider>
@@ -65,31 +67,40 @@ class StoryBuilder extends Component {
   }
 }
 
-const PathCard = ({ index, path, updatePath, removeSelf }) => {
+const PathCard = ({ obj_key, path, setPath }) => {
   return (
-    <div className="bg-blue-300 p-2 my-2 rounded-xl">
-      <h2>Story Card {index}</h2>
-      <label>Message</label>
-      <input
-        value={path.text}
-        onChange={(e) => updatePath({ ...path, text: e.target.value })}
-      />
-      <label className="text-grey">Embeds (Coming Soon)</label>
-      <input
-        disabled
-        onChange={(e) => updatePath({ ...path, embeds: e.target.value })}
-      />
-      {path.options.map((option, i) => (
-        <PathLink
-          index={i}
-          link={option}
-          setLink={(link) => {
-            const newOptions = [...path.options];
-            newOptions.splice(i, 1, link);
-            updatePath({ ...path, options: newOptions });
-          }}
+    <div className="bg-blue-300 p-2 my-2 rounded-xl flex-row">
+      <h2>Story Card {obj_key}</h2>
+      <div className="p-1 flex-column w-max">
+        <label className="p-1">Message</label>
+        <input
+          className="w-max text-black"
+          value={path.text}
+          onChange={(e) => setPath({ ...path, text: e.target.value }, obj_key)}
         />
-      ))}
+      </div>
+      <div className="p-1">
+        <label className="text-grey p-1">Embeds (Coming Soon)</label>
+        <input
+          disabled
+          onChange={(e) =>
+            setPath({ ...path, embeds: e.target.value }, obj_key)
+          }
+        />
+      </div>
+      <div className="p-1">
+        {path.options.map((option, i) => (
+          <PathLink
+            index={i}
+            link={option}
+            setLink={(link) => {
+              const newOptions = [...path.options];
+              newOptions.splice(i, 1, link);
+              setPath({ ...path, options: newOptions });
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -105,8 +116,13 @@ const PathLink = ({ index, link, setLink }) => {
         onChange={(e) => setLink({ ...link, text: e.target.value })}
       />
       <label>Goes to:</label>
-      {/* TODO: select component from all the existing path indexes */}
+      {/* TODO: select component from all the existing path keys */}
       <input type="select">{/* {()} */}</input>
+      <Selector
+        selected="Choose Route..."
+        options={existingPaths}
+        update={(e) => setLink({ ...link, dest: e.value })}
+      />
     </div>
   );
 };
