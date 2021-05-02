@@ -8,18 +8,39 @@ from discord.ext import commands
 from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash import SlashCommand, SlashContext
 
+# LOCAL
+from psqlconnect import database_fetch
+
 bot = commands.Bot(command_prefix="!")
 slash = SlashCommand(bot, sync_commands=True)
-
-
 num_to_emoji = {1: "1️⃣", 2: "2️⃣", 3: "3️⃣", 4: "4️⃣"}
 
 STARTING_NODE = "00000000-0000-0000-0000-000000000000"
 
-def fetch_story():
+
+def fetch_stories():
+    records = database_fetch("SELECT * FROM adventure;", ())
+    print(records)
     f = open("../sample_adventure.json")
     paths = json.loads(f.read())
-    return paths
+    return [paths]
+
+
+async def select_story(ctx: SlashContext, stories: list) -> dict:
+    responses = {}
+    stream = "Please select an adventure: \n"
+    for index, story in enumerate(stories):
+        index += 1
+        stream += f"{index}.) {story['name']}\n\t by: {story['creator']}\n\n"
+        responses.update(dict.fromkeys([story["name"], str(index)], index - 1))
+    await ctx.send(stream)
+
+    def handle_response(m):
+        return responses.get(m.content) is not None
+
+    msg = await bot.wait_for("message", check=handle_response)
+    story_index = responses[msg.content]
+    return stories[story_index]
 
 
 @bot.event
@@ -47,9 +68,11 @@ async def poll(ctx: SlashContext) -> None:
 
 @slash.slash(name="start", description="Begin your adventure!", guild_ids=[837844953790808074])
 async def start(ctx: SlashContext) -> None:
-    paths = fetch_story()
+    paths = fetch_stories()
+    story = await select_story(ctx, paths)
+    await ctx.send(f"You selected: {story['name']}")
     await ctx.send(
-        f"Would you like to Learnabot '{paths['name']}' {num_to_emoji[1]} solo or {num_to_emoji[2]} together?"
+        f"Would you like to Learnabot '{story['name']}' {num_to_emoji[1]} solo or {num_to_emoji[2]} together?"
     )
     together_responses = dict.fromkeys(["solo", "1", num_to_emoji[1]], False)
     together_responses.update(dict.fromkeys(["together", "2", num_to_emoji[2]], True))
@@ -60,15 +83,15 @@ async def start(ctx: SlashContext) -> None:
     msg = await bot.wait_for("message", check=handle_together)
     together = together_responses[msg.content]
     await ctx.send(
-        f"Get ready to Learnabot '{paths['name']}': {paths['description']}{' together' if together else ''}!"
+        f"Get ready to Learnabot '{story['name']}': {story['description']}{' together' if together else ''}!"
     )
     await asyncio.sleep(0.5)
 
-    dest = await handle_path(ctx, paths["paths"][STARTING_NODE], together)
+    dest = await handle_path(ctx, story["paths"][STARTING_NODE], together)
     while dest is not None:
         await asyncio.sleep(0.5)
-        dest = await handle_path(ctx, paths["paths"][dest], together)
-    await ctx.channel.send(f"You've reached the end of '{paths['name']}'! Good job!")
+        dest = await handle_path(ctx, story["paths"][dest], together)
+    await ctx.channel.send(f"You've reached the end of '{story['name']}'! Good job!")
 
 
 async def handle_path(ctx: SlashContext, path: Dict, together: bool):
