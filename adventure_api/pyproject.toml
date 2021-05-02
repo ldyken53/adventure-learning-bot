@@ -1,0 +1,33 @@
+[project]
+name = "adventure_api"
+version = "0.0.1"
+description = "The API for the adventure learning bot"
+authors = [
+    {name = "Cameron Wood", email = "cwood611@uab.edu"},
+    {name = "Elijah Sink", email = "theminorprofit@gmail.com"},
+    {name = "Jan Foksinski", email = "jkf@uab.edu"},
+    {name = "Landon Dyken", email = "ldyken53@gmail.com"},
+]
+dependencies = [
+    "flask~=1.1",
+    "gunicorn~=20.1",
+    "psycopg2-binary~=2.8",
+]
+requires-python = ">=3.9"
+dynamic = ["classifiers"]
+license = {text = "MIT"}
+
+[project.urls]
+homepage = ""
+
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
+
+[tool]
+[tool.pdm]
+[tool.pdm.scripts]
+_.env_file = ".env"
+start = "gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app"
+build-image = "gcloud builds submit --tag gcr.io/directed-beacon-307320/adventure-api"
+deploy = "gcloud run deploy adventure-api --image gcr.io/directed-beacon-307320/adventure-api --platform managed -q"

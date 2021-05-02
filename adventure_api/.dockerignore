@@ -1,0 +1,10 @@
+Dockerfile
+README.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+__pypackages__/
+.pdm.toml
+.pytest_cache
+*.egg-info/
