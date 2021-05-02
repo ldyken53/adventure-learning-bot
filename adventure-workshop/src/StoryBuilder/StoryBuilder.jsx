@@ -179,7 +179,7 @@ const PathLink = ({ index, link, setLink, delLink }) => {
     <div className="grid grid-cols-10 gap-1 p-2 my-1 bg-gray-300 rounded-md">
       <textarea
         placeholder="Fancy transition message to the next story element..."
-        className="col-span-6 text-black resize-none border rounded-md w-full min-h-0 h-14 align-middle"
+        className="col-span-6 text-black resize-none border rounded-md w-full min-h-0 h-12 align-middle"
         value={link.text}
         onChange={(e) => setLink({ ...link, text: e.target.value })}
       />
