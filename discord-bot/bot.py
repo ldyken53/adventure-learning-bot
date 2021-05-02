@@ -36,11 +36,6 @@ async def on_message(message):
         await message.channel.send("Hello!")
 
 
-@slash.slash(name="learn")
-async def learn(ctx: SlashContext) -> None:
-    await ctx.send(content="What would you like to learn?")
-
-
 @slash.slash(name="poll", guild_ids=[837844953790808074])
 async def poll(ctx: SlashContext) -> None:
     msg = await ctx.send(content="POLL: \n :one: \n :two: \n :three: \n :four: \n")
@@ -50,7 +45,7 @@ async def poll(ctx: SlashContext) -> None:
     await msg.add_reaction("4️⃣")
 
 
-@slash.slash(name="start-test", guild_ids=[837844953790808074])
+@slash.slash(name="start", description="Begin your adventure!", guild_ids=[837844953790808074])
 async def start(ctx: SlashContext) -> None:
     paths = fetch_story()
     await ctx.send(
