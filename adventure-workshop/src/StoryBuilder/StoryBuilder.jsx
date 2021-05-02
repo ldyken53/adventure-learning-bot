@@ -1,6 +1,7 @@
 import React, { Component, useContext } from "react";
 import { v4 as uuid4 } from "uuid";
 import { Selector } from "../Selector.jsx";
+import { FaRegTrashAlt } from "react-icons/fa";
 // import { Link } from "react-router-dom";
 
 // const STORY_TEMPLATE = {
@@ -57,13 +58,13 @@ class StoryBuilder extends Component {
     const newPaths = { ...this.state.paths };
     newPaths[key] = path;
     console.log(path);
-    console.log(key)
+    console.log(key);
     this.setState({ paths: newPaths });
   };
 
   render() {
     return (
-      <div>
+      <div className="w-3/4">
         <PathCardsContext.Provider value={this.state.paths}>
           {Object.entries(this.state.paths).map(([obj_key, path], i) => (
             <PathCard
@@ -73,10 +74,14 @@ class StoryBuilder extends Component {
               setPath={(path) => {
                 this.updatePath(path, obj_key);
               }}
+              delSelf={() => this.removePath(obj_key)}
             />
           ))}
         </PathCardsContext.Provider>
-        <button onClick={() => this.addPath({ ...PATH_TEMPLATE })}>
+        <button
+          className="shadow bg-blue-700 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          onClick={() => this.addPath({ ...PATH_TEMPLATE })}
+        >
           Add Path Card
         </button>
       </div>
@@ -84,21 +89,31 @@ class StoryBuilder extends Component {
   }
 }
 
-const PathCard = ({ obj_key, path, setPath }) => {
+const PathCard = ({ obj_key, path, setPath, delSelf }) => {
   return (
-    <div className="bg-blue-300 p-2 my-2 rounded-xl flex flex-col">
-      <h2>Story Card {obj_key}</h2>
-      <div className="p-1 w-max flex-row">
-        <label className="p-1">Message</label>
-        <input
-          className="text-black"
+    <div className="bg-indigo-800 p-2 my-2 rounded-xl flex flex-col">
+      <div className="flex flex-row justify-between">
+        <h2>
+          Story Card <label className="text-sm">{obj_key}</label>
+        </h2>
+        {obj_key !== START_PATH_CARD_ID ? (
+          <button className="bg-red-600 rounded px-2" onClick={() => delSelf()}>
+            <FaRegTrashAlt />
+          </button>
+        ) : null}
+      </div>
+      <div className="p-1 grid grid-cols-4 gap-2">
+        <label className="p-1 place-self-center">Message</label>
+        <textarea
+          className="text-black resize-none border rounded-md w-full col-span-3 place-self-center"
           value={path.text}
           onChange={(e) => setPath({ ...path, text: e.target.value }, obj_key)}
         />
       </div>
-      <div className="p-1 flex-row">
-        <label className="text-grey p-1">Embeds (Coming Soon)</label>
-        <input
+      <div className="p-1 grid grid-cols-4 gap-2">
+        <label className="text-grey p-1 text-base">Embeds (Coming Soon)</label>
+        <textarea
+          className="text-black h-6 bg-gray-300 resize-none border rounded-md w-full col-span-3 place-self-center"
           disabled
           onChange={(e) =>
             setPath({ ...path, embeds: e.target.value }, obj_key)
@@ -139,20 +154,19 @@ const PathCard = ({ obj_key, path, setPath }) => {
 const PathLink = ({ index, link, setLink, delLink }) => {
   const existingPaths = useContext(PathCardsContext);
   return (
-    <div className="flex flex-row p-2 bg-blue-500 rounded">
-      <div className="flex-column w-1/2">
-        <label>Text:</label>
-        <div className="md:w-auto">
-          <input
-            className="text-black"
+    <div className="grid grid-cols-10 gap-1 px-2 py-1 my-1 bg-blue-500 rounded">
+      <div className="col-span-6 place-self-stretch">
+        <div className="h-full">
+          <textarea
+            placeholder="Fancy transition message to the next story element..."
+            className="text-black resize-none border rounded-md w-full h-full"
             value={link.text}
             onChange={(e) => setLink({ ...link, text: e.target.value })}
           />
         </div>
       </div>
-      <div className="flex-column w-1/2">
-        <label>Goes to:</label>
-        <div className="md:w-auto">
+      <div className="col-span-3">
+        <div className="">
           <Selector
             selected={link.dest === "" ? "Choose Route..." : link.dest}
             options={existingPaths}
@@ -160,7 +174,12 @@ const PathLink = ({ index, link, setLink, delLink }) => {
           />
         </div>
       </div>
-      <button onClick={() => delLink()}>Remove Link</button>
+      <button
+        className="bg-red-600 rounded p-1 place-self-center"
+        onClick={() => delLink()}
+      >
+        <FaRegTrashAlt />
+      </button>
     </div>
   );
 };
