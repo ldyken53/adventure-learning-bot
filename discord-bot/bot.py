@@ -19,8 +19,8 @@ STARTING_NODE = "00000000-0000-0000-0000-000000000000"
 
 
 def fetch_stories():
-    records = database_fetch("SELECT * FROM adventure;", ())
-    print(records)
+    # records = database_fetch("SELECT * FROM adventure;", ())
+    # print(records)
     f = open("../sample_adventure.json")
     paths = json.loads(f.read())
     return [paths]
@@ -102,13 +102,21 @@ async def handle_path(ctx: SlashContext, path: Dict, together: bool):
         def handle_option(m):
             return response_to_dest.get(m.content) is not None
 
+        def handle_together(m):
+            return m.content == "END POLL"
+
         await asyncio.sleep(0.5)
         msg = await ctx.channel.send(option_msg)
         if together:
             for i in range(len(path["options"])):
                 await msg.add_reaction(num_to_emoji[i + 1])
-        msg = await bot.wait_for("message", check=handle_option)
-        await msg.add_reaction("👍")
+            await ctx.channel.send("Send 'END POLL' to end the poll and take the most popular path")
+            await bot.wait_for("message", check=handle_together)
+            cache_msg = discord.utils.get(bot.cached_messages, id=msg.id) 
+            msg.content = max(cache_msg.reactions, key = lambda k: k.count).emoji
+        else:
+            msg = await bot.wait_for("message", check=handle_option)
+            await msg.add_reaction("👍")
         return response_to_dest[msg.content]
 
 
