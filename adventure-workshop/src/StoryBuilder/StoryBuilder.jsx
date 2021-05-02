@@ -1,4 +1,5 @@
 import React, { Component, useContext } from "react";
+import { Link } from "react-router-dom";
 import { v4 as uuid4 } from "uuid";
 import { Selector } from "../Selector.jsx";
 // import { Link } from "react-router-dom";
@@ -15,6 +16,11 @@ const PATH_TEMPLATE = {
   text: "",
   embeds: {},
   options: [],
+};
+
+const LINK_TEMPLATE = {
+  text: "",
+  dest: "",
 };
 
 const START_PATH_CARD_ID = "00000000-0000-0000-0000-000000000000";
@@ -37,6 +43,14 @@ class StoryBuilder extends Component {
   removePath = (key) => {
     const newPaths = { ...this.state.paths };
     delete newPaths[key];
+    this.setState({ paths: newPaths });
+  };
+
+  removeLink = (key, index) => {
+    const newPaths = { ...this.state.paths };
+    const relavantPath = newPaths[key];
+    relavantPath.options.splice(index, 1);
+    newPaths[key] = relavantPath;
     this.setState({ paths: newPaths });
   };
 
@@ -69,17 +83,17 @@ class StoryBuilder extends Component {
 
 const PathCard = ({ obj_key, path, setPath }) => {
   return (
-    <div className="bg-blue-300 p-2 my-2 rounded-xl flex-row">
+    <div className="bg-blue-300 p-2 my-2 rounded-xl flex flex-col">
       <h2>Story Card {obj_key}</h2>
-      <div className="p-1 flex-column w-max">
+      <div className="p-1 w-max flex-row">
         <label className="p-1">Message</label>
         <input
-          className="w-max text-black"
+          className="text-black"
           value={path.text}
           onChange={(e) => setPath({ ...path, text: e.target.value }, obj_key)}
         />
       </div>
-      <div className="p-1">
+      <div className="p-1 flex-row">
         <label className="text-grey p-1">Embeds (Coming Soon)</label>
         <input
           disabled
@@ -88,9 +102,11 @@ const PathCard = ({ obj_key, path, setPath }) => {
           }
         />
       </div>
-      <div className="p-1">
+      <div className="p-1 flex-col">
+        <label className="text-grey p-1">Links</label>
         {path.options.map((option, i) => (
           <PathLink
+            key={i}
             index={i}
             link={option}
             setLink={(link) => {
@@ -98,31 +114,50 @@ const PathCard = ({ obj_key, path, setPath }) => {
               newOptions.splice(i, 1, link);
               setPath({ ...path, options: newOptions });
             }}
+            delLink={() => {
+              const newOptions = [...path.options];
+              newOptions.splice(i, 1);
+              setPath({ ...path, options: newOptions });
+            }}
           />
         ))}
+        <button
+          onClick={() =>
+            setPath({ ...path, options: [...path.options, LINK_TEMPLATE] })
+          }
+        >
+          + Add Link +
+        </button>
       </div>
     </div>
   );
 };
 
-const PathLink = ({ index, link, setLink }) => {
+const PathLink = ({ index, link, setLink, delLink }) => {
   const existingPaths = useContext(PathCardsContext);
-
   return (
-    <div className="flex-row">
-      <label>Text:</label>
-      <input
-        value={link.text}
-        onChange={(e) => setLink({ ...link, text: e.target.value })}
-      />
-      <label>Goes to:</label>
-      {/* TODO: select component from all the existing path keys */}
-      <input type="select">{/* {()} */}</input>
-      <Selector
-        selected="Choose Route..."
-        options={existingPaths}
-        update={(e) => setLink({ ...link, dest: e.value })}
-      />
+    <div className="flex flex-row p-2 bg-blue-500 rounded">
+      <div className="flex-column w-1/2">
+        <label>Text:</label>
+        <div className="md:w-auto">
+          <input
+            className="text-black"
+            value={link.text}
+            onChange={(e) => setLink({ ...link, text: e.target.value })}
+          />
+        </div>
+      </div>
+      <div className="flex-column w-1/2">
+        <label>Goes to:</label>
+        <div className="md:w-auto">
+          <Selector
+            selected={link.dest === "" ? "Choose Route..." : link.dest}
+            options={existingPaths}
+            update={(e) => setLink({ ...link, dest: e })}
+          />
+        </div>
+      </div>
+      <button onClick={delLink()}>Remove Link</button>
     </div>
   );
 };
