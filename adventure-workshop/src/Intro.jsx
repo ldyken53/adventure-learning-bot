@@ -6,6 +6,7 @@ class Intro extends Component {
     super(props);
     this.displayForm = this.displayForm.bind(this);
     this.displayDesc = this.displayDesc.bind(this);
+    this.displayLink = this.displayLink.bind(this);
   }
 
   displayForm() {
@@ -27,6 +28,7 @@ class Intro extends Component {
               value={name}
               onChange={updateTitle}
               className="text-black text-3xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
+              // eslint-disable-next-line
               placeholder={"The Greatest" + (" " + genre) + " Adventure"}
             />
           </div>
@@ -61,16 +63,30 @@ class Intro extends Component {
             onChange={updateDesc}
             className="text-black text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
             placeholder={
+              // eslint-disable-next-line
               "A guided tour into the field of" + (" " + genre) + " ..."
             }
           />
         </div>
+        {this.displayLink()}
       </div>
     ) : null;
   }
 
+  displayLink() {
+    const { description } = this.props;
+    return description !== "" ? (
+      <Link
+        className="bg-blue-900 p-2 rounded"
+        id="story-builder"
+        to={"/story-builder"}
+      >
+        Let's Make a Story!
+      </Link>
+    ) : null;
+  }
+
   render() {
-    const { genre } = this.props;
     return <div>{this.displayForm()}</div>;
   }
 }
