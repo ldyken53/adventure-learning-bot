@@ -37,7 +37,9 @@ def connect_from_env():
         "password": os.getenv("PG_PASSWORD"),
         "host": os.getenv("PG_HOST"),
     }
-    return psycopg2.connect(**kwargs, cursor_factory=DictCursor)
+    conn = psycopg2.connect(**kwargs, cursor_factory=DictCursor)
+    conn.autocommit = True
+    return conn
 
 
 def database_execute(query: str, args):
