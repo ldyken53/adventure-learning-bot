@@ -19,12 +19,11 @@ def connect_from_env():
     return psycopg2.connect(**kwargs, cursor_factory=DictCursor)
 
 
-def database_execute(query: str):
+def database_fetch(query: str, args: tuple) -> list:
     conn = connect_from_env()
+    print("Database connection success!")
+    with conn.cursor() as curs:
+        curs.execute(query, args)
+        rows = curs.fetchall()
     conn.close()
-
-
-if __name__ == "__main__":
-    print("Testing database connection...")
-    database_execute("something")
-    print("Success!")
+    return list(rows)
