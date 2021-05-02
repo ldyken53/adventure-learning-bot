@@ -62,7 +62,7 @@ class StoryBuilder extends Component {
 
   render() {
     return (
-      <div className="w-3/4">
+      <div className="w-3/4 text-black">
         <PathCardsContext.Provider value={this.state.paths}>
           {Object.entries(this.state.paths).map(([obj_key, path], i) => (
             <PathCard
@@ -77,14 +77,14 @@ class StoryBuilder extends Component {
           ))}
         </PathCardsContext.Provider>
         <button
-          className="shadow bg-blue-700 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() => this.addPath({ ...PATH_TEMPLATE })}
         >
           Add Path Card
         </button>
 
         <button
-          className="shadow bg-blue-700 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() => console.log(this.state.paths)}
         >
           Dump Path to Console
@@ -96,11 +96,11 @@ class StoryBuilder extends Component {
 
 const PathCard = ({ obj_key, path, setPath, delSelf }) => {
   return (
-    <div className="bg-indigo-800 p-2 my-2 rounded-xl flex flex-col">
+    <div className="bg-white p-2 my-2 rounded-xl flex flex-col">
       <div className="flex flex-row justify-between">
         <h2>Story Card</h2>
         {obj_key !== START_PATH_CARD_ID ? (
-          <button className="bg-red-600 rounded px-2" onClick={() => delSelf()}>
+          <button className="rounded px-2" onClick={() => delSelf()}>
             <FaRegTrashAlt />
           </button>
         ) : null}
@@ -108,7 +108,7 @@ const PathCard = ({ obj_key, path, setPath, delSelf }) => {
       <div className="p-1 grid grid-cols-4 gap-2">
         <label className="p-1 place-self-center">Message</label>
         <textarea
-          className="text-black resize-none border rounded-md w-full col-span-3 place-self-center"
+          className="text-black bg-mint-green resize-none border rounded-md w-full col-span-3 place-self-center"
           value={path.text}
           onChange={(e) => setPath({ ...path, text: e.target.value }, obj_key)}
         />
@@ -142,7 +142,7 @@ const PathCard = ({ obj_key, path, setPath, delSelf }) => {
           />
         ))}
         <button
-          className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          className="shadow text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() =>
             setPath({ ...path, options: [...path.options, LINK_TEMPLATE] })
           }
@@ -157,28 +157,22 @@ const PathCard = ({ obj_key, path, setPath, delSelf }) => {
 const PathLink = ({ index, link, setLink, delLink }) => {
   const existingPaths = useContext(PathCardsContext);
   return (
-    <div className="grid grid-cols-10 gap-1 px-2 py-1 my-1 bg-blue-500 rounded">
-      <div className="col-span-6 place-self-stretch">
-        <div className="h-full">
-          <textarea
-            placeholder="Fancy transition message to the next story element..."
-            className="text-black resize-none border rounded-md w-full h-full"
-            value={link.text}
-            onChange={(e) => setLink({ ...link, text: e.target.value })}
-          />
-        </div>
-      </div>
-      <div className="col-span-3">
-        <div className="">
-          <Selector
-            selected={link.dest === "" ? "Choose Route..." : link.dest}
-            options={existingPaths}
-            update={(e) => setLink({ ...link, dest: e })}
-          />
-        </div>
+    <div className="grid grid-cols-10 gap-1 p-2 my-1 bg-gray-300 rounded-md">
+      <textarea
+        placeholder="Fancy transition message to the next story element..."
+        className="col-span-6 text-black resize-none border rounded-md w-full min-h-0 h-14 align-middle"
+        value={link.text}
+        onChange={(e) => setLink({ ...link, text: e.target.value })}
+      />
+      <div className="col-span-3 h-0">
+        <Selector
+          selected={link.dest === "" ? "Choose Route..." : link.dest}
+          options={existingPaths}
+          update={(e) => setLink({ ...link, dest: e })}
+        />
       </div>
       <button
-        className="bg-red-600 rounded p-1 place-self-center"
+        className=" rounded p-1 place-self-center"
         onClick={() => delLink()}
       >
         <FaRegTrashAlt />

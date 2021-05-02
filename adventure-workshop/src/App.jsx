@@ -56,7 +56,7 @@ class App extends Component {
                   <>
                     <p>Welcome to Learn-A-Bot's Adventure Workshop!</p>
                     <Link
-                      className="bg-blue-900 p-2 rounded"
+                      className="bg-indigo-600 p-2 rounded-md"
                       id="start-button"
                       to={"/start"}
                     >

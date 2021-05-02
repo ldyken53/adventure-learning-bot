@@ -13,14 +13,14 @@ class Intro extends Component {
     const { genre, name, updateTitle } = this.props;
     return genre !== "" ? (
       <>
-        <div className="p-3">
+        <div className="py-2">
           <label
             htmlFor="name"
             className="block p-2 text-3xl font-medium text-white"
           >
             What's the catchy name for your adventure?:
           </label>
-          <div className="mt-1 relative rounded-md shadow-sm">
+          <div className="relative rounded-md shadow-sm">
             <input
               type="text"
               name="name"
@@ -38,7 +38,7 @@ class Intro extends Component {
     ) : (
       <div className="p-3">
         <h1 className="p-3">Missing Genre!</h1>
-        <Link className="bg-blue-900 p-2 rounded" id="start" to={"/start"}>
+        <Link className="bg-indigo-600 p-2 rounded-md" id="start" to={"/start"}>
           Click here to choose a genre
         </Link>
       </div>
@@ -47,14 +47,14 @@ class Intro extends Component {
   displayDesc() {
     const { genre, name, description, updateDesc } = this.props;
     return name !== "" ? (
-      <div className="p-3">
+      <div className="py-1">
         <label
           htmlFor="desc"
           className="block p-2 text-3xl font-medium text-white"
         >
           What's a good description of your adventure?:
         </label>
-        <div className="mt-1 relative rounded-md shadow-sm">
+        <div className="mb-8 relative rounded-md shadow-sm">
           <input
             type="text"
             name="desc"
@@ -77,7 +77,7 @@ class Intro extends Component {
     const { description } = this.props;
     return description !== "" ? (
       <Link
-        className="bg-blue-900 p-2 rounded"
+        className="p-3 bg-indigo-600 p-2 rounded-md"
         id="story-builder"
         to={"/story-builder"}
       >
