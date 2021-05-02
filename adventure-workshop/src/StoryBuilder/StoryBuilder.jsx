@@ -1,16 +1,15 @@
 import React, { Component, useContext } from "react";
-import { Link } from "react-router-dom";
 import { v4 as uuid4 } from "uuid";
 import { Selector } from "../Selector.jsx";
 // import { Link } from "react-router-dom";
 
-const STORY_TEMPLATE = {
-  genre_id: "uuid",
-  name: "",
-  description: "",
-  creator: "",
-  paths: {},
-};
+// const STORY_TEMPLATE = {
+//   genre_id: "uuid",
+//   name: "",
+//   description: "",
+//   creator: "",
+//   paths: {},
+// };
 
 const PATH_TEMPLATE = {
   text: "",
