@@ -11,6 +11,7 @@ import { Intro } from "./Intro.jsx";
 import { StoryBuilder } from "./StoryBuilder/StoryBuilder.jsx";
 import "./App.css";
 
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 class App extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +44,12 @@ class App extends Component {
   componentDidMount() {
     fetch("https://adventure-api-57rkjmf5la-uc.a.run.app/get-genres")
       .then((res) => res.json())
-      .then((json) => this.setState({ genres: json }));
+      .then((json) => {
+        for (var i = 0; i < json.length; i++) {
+          json[i].name = capitalize(json[i].name);
+        }
+        this.setState({ genres: json });
+      });
   }
 
   render() {
@@ -54,6 +60,8 @@ class App extends Component {
       genres,
       creator,
     } = this.state;
+
+    
     return (
       <Router basename="/">
         <div className="App">

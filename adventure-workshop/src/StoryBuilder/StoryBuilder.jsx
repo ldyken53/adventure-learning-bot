@@ -104,17 +104,17 @@ class StoryBuilder extends Component {
           Add Path Card
         </button>
 
-        <button
+        {/* <button
           className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() => console.log(this.exportStory())}
         >
           Dump Story to Console
-        </button>
+        </button> */}
         <button
           className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
           onClick={() => this.postStory()}
         >
-          POST Story
+          Finished!
         </button>
       </div>
     );
@@ -124,7 +124,7 @@ class StoryBuilder extends Component {
 const PathCard = ({ obj_key, path, setPath, delSelf }) => {
   return (
     <div className="bg-white p-2 my-2 rounded-xl flex flex-col">
-      <div className="flex flex-row justify-between">
+      <div>
         <h2>Story Card</h2>
         {obj_key !== START_PATH_CARD_ID ? (
           <button className="rounded px-2" onClick={() => delSelf()}>
@@ -141,14 +141,6 @@ const PathCard = ({ obj_key, path, setPath, delSelf }) => {
         />
       </div>
       <div className="p-1 grid grid-cols-4 gap-2">
-        <label className="text-grey p-1 text-base">Embeds (Coming Soon)</label>
-        <textarea
-          className="text-black h-6 bg-gray-300 resize-none border rounded-md w-full col-span-3 place-self-center"
-          disabled
-          onChange={(e) =>
-            setPath({ ...path, embeds: e.target.value }, obj_key)
-          }
-        />
       </div>
       <div className="p-1 flex-col">
         {path.options.map((option, i) => (
