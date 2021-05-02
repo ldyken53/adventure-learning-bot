@@ -53,6 +53,22 @@ async def select_story(ctx: SlashContext, stories: list) -> dict:
     return stories[story_index]
 
 
+async def select_genre(ctx: SlashContext, genres: list):
+    responses = {}
+    stream = "Please select a genre: \n"
+    for index, genre in enumerate(genres):
+        index += 1
+        stream += f"{num_to_emoji(index)}    {genre['name'].capitalize() + ' ' + genre['emoji']}\n\t      {genre['description']}\n\n"
+        responses.update(dict.fromkeys([genre["name"], str(index), num_to_emoji(index)], index - 1))
+    await ctx.send(stream)
+
+    def handle_response(m):
+        return responses.get(m.content) is not None
+
+    msg = await bot.wait_for("message", check=handle_response)
+    genre_index = responses[msg.content]
+    return genres[genre_index]
+
 @bot.event
 async def on_ready():
     print("We have logged in as {0.user}".format(bot))
@@ -61,6 +77,14 @@ async def on_ready():
 @slash.slash(name="start", description="Begin your adventure!", guild_ids=[837844953790808074])
 async def start(ctx: SlashContext) -> None:
     paths = fetch_stories()
+    genres = fetch_genres()
+    genre = await select_genre(ctx, genres)
+    paths = [path for path in paths if path["genre_id"] == genre["id"]]
+    if not paths:
+        embed = discord.Embed()
+        embed.description = "Sadly no adventures have been made in this genre yet. Check again later, or make your own [here!](https://directed-beacon-307320.uc.r.appspot.com/home)"
+        await ctx.send(embed=embed)
+        return
     story = await select_story(ctx, paths)
     await ctx.send(f"You selected: {story['name']}")
     await ctx.send(
