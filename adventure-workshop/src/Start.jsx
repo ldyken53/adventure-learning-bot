@@ -12,11 +12,16 @@ class Start extends Component {
         <h2>Please select one of the options below:</h2>
         <GenreOptions
           genre={this.props.genre}
+          genres={this.props.genres}
           update={this.props.updateGenre}
         />
         <br />
         {this.props.genre !== "Pick A Genre..." ? (
-          <Link className="bg-indigo-600 p-2 rounded-md" id="intro" to={"/intro"}>
+          <Link
+            className="bg-indigo-600 p-2 rounded-md"
+            id="intro"
+            to={"/intro"}
+          >
             Go onto intro!
           </Link>
         ) : null}

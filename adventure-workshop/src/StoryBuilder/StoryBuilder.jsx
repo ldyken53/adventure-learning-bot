@@ -36,6 +36,26 @@ class StoryBuilder extends Component {
     };
   }
 
+  exportStory() {
+    const { name, description, genre } = this.props;
+    return {
+      genre_id: genre,
+      name: name,
+      description: description,
+      paths: this.state.paths,
+    };
+  }
+
+  postStory() {
+    fetch("https://adventure-api-57rkjmf5la-uc.a.run.app/add-adventure", {
+      method: "POST",
+      body: JSON.stringify(this.exportStory()),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then(console.log);
+  }
+
   addPath = (path) => {
     this.setState({ paths: { ...this.state.paths, [uuid4()]: path } });
   };
@@ -85,9 +105,15 @@ class StoryBuilder extends Component {
 
         <button
           className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-          onClick={() => console.log(this.state.paths)}
+          onClick={() => console.log(this.exportStory())}
         >
-          Dump Path to Console
+          Dump Story to Console
+        </button>
+        <button
+          className="shadow p-1 m-1 text-2xl bg-indigo-600 hover:bg-indigo-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          onClick={() => this.postStory()}
+        >
+          POST Story
         </button>
       </div>
     );

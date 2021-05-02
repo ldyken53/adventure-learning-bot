@@ -15,7 +15,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      genre: "Pick A Genre...",
+      genre: null,
+      genres: [],
       name: "",
       description: "",
     };
@@ -25,7 +26,7 @@ class App extends Component {
   }
 
   updateGenre(g) {
-    this.setState({ genre: g.name });
+    this.setState({ genre: g });
   }
 
   updateTitle(event) {
@@ -35,16 +36,20 @@ class App extends Component {
     this.setState({ description: event.target.value });
   }
 
+  componentDidMount() {
+    fetch("https://adventure-api-57rkjmf5la-uc.a.run.app/get-genres")
+      .then((res) => res.json())
+      .then((json) => this.setState({ genres: json }));
+  }
+
   render() {
-    const { genre, name } = this.state;
+    const { genre, name, description, genres } = this.state;
     return (
       <Router basename="/">
         <div className="App">
           <header className="App-header">
             <div className="grid grid-rows-2">
-              {genre !== "Pick A Genre..." ? (
-                <label>{"Genre: " + genre}</label>
-              ) : null}
+              {genre ? <label>{"Genre: " + genre.name}</label> : null}
               {name !== "" ? <label>{"Title: " + name}</label> : null}
             </div>
             <Switch>
@@ -72,7 +77,8 @@ class App extends Component {
                 render={(props) => (
                   <Start
                     updateGenre={this.updateGenre}
-                    genre={this.state.genre}
+                    genre={genre}
+                    genres={genres}
                   />
                 )}
               />
@@ -82,9 +88,9 @@ class App extends Component {
                 path="/intro"
                 render={(props) => (
                   <Intro
-                    genre={this.state.genre}
-                    name={this.state.name}
-                    description={this.state.description}
+                    genre={genre}
+                    name={name}
+                    description={description}
                     updateTitle={this.updateTitle}
                     updateDesc={this.updateDesc}
                   />
@@ -94,7 +100,13 @@ class App extends Component {
                 exact
                 key="story-builder"
                 path="/story-builder"
-                render={(props) => <StoryBuilder />}
+                render={(props) => (
+                  <StoryBuilder
+                    name={name}
+                    description={description}
+                    genre={genre.id}
+                  />
+                )}
               />
               <Redirect to="/home" />
             </Switch>

@@ -3,35 +3,12 @@ import { Fragment, Component } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 
-const genres = [
-  {
-    id: 1,
-    name: "Math",
-  },
-  {
-    id: 2,
-    name: "Science",
-  },
-  {
-    id: 3,
-    name: "History",
-  },
-  {
-    id: 4,
-    name: "English",
-  },
-  {
-    id: 5,
-    name: "Language",
-  },
-];
-
 class GenreOptions extends Component {
   classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
   render() {
-    const { genre, update } = this.props;
+    const { genres, genre, update } = this.props;
     return (
       <Listbox value={genre} onChange={update}>
         {({ open }) => (
@@ -43,7 +20,7 @@ class GenreOptions extends Component {
               <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <span className="flex items-center">
                   <span className="ml-3 block truncate text-black text-2xl">
-                    {genre}
+                    {genre ? genre.name : "Pick a genre..."}
                   </span>
                 </span>
                 <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -65,7 +42,7 @@ class GenreOptions extends Component {
                   static
                   className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
                 >
-                  {genres.map((_genre) => (
+                  {(genres || []).map((_genre) => (
                     <Listbox.Option
                       key={_genre.id}
                       className={({ active }) =>

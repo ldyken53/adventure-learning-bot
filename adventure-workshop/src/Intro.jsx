@@ -11,7 +11,7 @@ class Intro extends Component {
 
   displayForm() {
     const { genre, name, updateTitle } = this.props;
-    return genre !== "" ? (
+    return genre ? (
       <>
         <div className="py-2">
           <label
@@ -29,7 +29,7 @@ class Intro extends Component {
               onChange={updateTitle}
               className="text-black text-3xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
               // eslint-disable-next-line
-              placeholder={"The Greatest" + (" " + genre) + " Adventure"}
+              placeholder={"The Greatest" + (" " + genre.name) + " Adventure"}
             />
           </div>
         </div>
@@ -64,7 +64,7 @@ class Intro extends Component {
             className="text-black text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 border-gray-300 rounded-md"
             placeholder={
               // eslint-disable-next-line
-              "A guided tour into the field of" + (" " + genre) + " ..."
+              "A guided tour into the field of" + (" " + genre.name) + " ..."
             }
           />
         </div>
