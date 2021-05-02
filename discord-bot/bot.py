@@ -14,6 +14,13 @@ slash = SlashCommand(bot, sync_commands=True)
 
 num_to_emoji = {1: "1️⃣", 2: "2️⃣", 3: "3️⃣", 4: "4️⃣"}
 
+STARTING_NODE = "00000000-0000-0000-0000-000000000000"
+
+def fetch_story():
+    f = open("../sample_adventure.json")
+    paths = json.loads(f.read())
+    return paths
+
 
 @bot.event
 async def on_ready():
@@ -45,8 +52,7 @@ async def poll(ctx: SlashContext) -> None:
 
 @slash.slash(name="start-test", guild_ids=[837844953790808074])
 async def start(ctx: SlashContext) -> None:
-    f = open("../sample_adventure.json")
-    paths = json.loads(f.read())
+    paths = fetch_story()
     await ctx.send(
         f"Would you like to Learnabot '{paths['name']}' {num_to_emoji[1]} solo or {num_to_emoji[2]} together?"
     )
@@ -62,7 +68,8 @@ async def start(ctx: SlashContext) -> None:
         f"Get ready to Learnabot '{paths['name']}': {paths['description']}{' together' if together else ''}!"
     )
     await asyncio.sleep(0.5)
-    dest = await handle_path(ctx, paths["paths"][0], together)
+
+    dest = await handle_path(ctx, paths["paths"][STARTING_NODE], together)
     while dest is not None:
         await asyncio.sleep(0.5)
         dest = await handle_path(ctx, paths["paths"][dest], together)
