@@ -36,10 +36,17 @@ class App extends Component {
   }
 
   render() {
+    const { genre, name } = this.state;
     return (
       <Router basename="/">
         <div className="App">
           <header className="App-header">
+            <div className="grid grid-rows-2">
+              {genre !== "Pick A Genre..." ? (
+                <label>{"Genre: " + genre}</label>
+              ) : null}
+              {name !== "" ? <label>{"Title: " + name}</label> : null}
+            </div>
             <Switch>
               <Route
                 exact

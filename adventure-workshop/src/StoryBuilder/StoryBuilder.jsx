@@ -48,17 +48,15 @@ class StoryBuilder extends Component {
 
   removeLink = (key, index) => {
     const newPaths = { ...this.state.paths };
-    const relavantPath = newPaths[key];
-    relavantPath.options.splice(index, 1);
-    newPaths[key] = relavantPath;
+    const relevantPath = newPaths[key];
+    relevantPath.options.splice(index, 1);
+    newPaths[key] = relevantPath;
     this.setState({ paths: newPaths });
   };
 
   updatePath = (path, key) => {
     const newPaths = { ...this.state.paths };
     newPaths[key] = path;
-    console.log(path);
-    console.log(key);
     this.setState({ paths: newPaths });
   };
 
@@ -84,6 +82,13 @@ class StoryBuilder extends Component {
         >
           Add Path Card
         </button>
+
+        <button
+          className="shadow bg-blue-700 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          onClick={() => console.log(this.state.paths)}
+        >
+          Dump Path to Console
+        </button>
       </div>
     );
   }
@@ -93,9 +98,7 @@ const PathCard = ({ obj_key, path, setPath, delSelf }) => {
   return (
     <div className="bg-indigo-800 p-2 my-2 rounded-xl flex flex-col">
       <div className="flex flex-row justify-between">
-        <h2>
-          Story Card <label className="text-sm">{obj_key}</label>
-        </h2>
+        <h2>Story Card</h2>
         {obj_key !== START_PATH_CARD_ID ? (
           <button className="bg-red-600 rounded px-2" onClick={() => delSelf()}>
             <FaRegTrashAlt />
