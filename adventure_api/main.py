@@ -1,14 +1,34 @@
 # STL
 import os
+import json
+import logging
 
 # PDM
+import flask_cors
 from flask import Flask, jsonify, request
+from flask_cors.decorator import cross_origin
 import psycopg2
 from psycopg2.extras import DictCursor
 
 app = Flask(__name__)
+flask_cors.CORS(app)
 
 debug = False
+
+logging.getLogger("flask_cors").level = logging.DEBUG
+logging.getLogger().level = logging.DEBUG
+logging.getLogger(__name__).level = logging.DEBUG
+
+LOG = logging.getLogger(__name__)
+LOG.error("Initialized logger")
+
+
+@app.before_request
+def before_request():
+    LOG.debug("Debug test")
+    LOG.info("Info test")
+    LOG.warning("Warning test")
+    LOG.error("Error test")
 
 
 def connect_from_env():
@@ -49,19 +69,23 @@ def test():
 
 
 @app.route("/get-genres")
+@cross_origin()
 def get_genres():
     records = database_query("SELECT * FROM genre;", tuple())
     return jsonify([{**record} for record in records])
 
 
 @app.route("/get-adventures")
+@cross_origin()
 def get_adventures():
     records = database_query("SELECT * FROM adventure;", tuple())
     return jsonify([{**record} for record in records])
 
 
 @app.route("/add-adventure", methods=["POST"])
+@cross_origin()
 def add_adventure():
+    LOG.warning("/add-adventure called")
     genre_id = request.json.get("genre_id")
     name = request.json.get("name")
     description = request.json.get("description")
@@ -77,15 +101,17 @@ def add_adventure():
         paths
     ) 
     VALUES (
-        '$1'::uuid, 
-        '$2', 
-        '$3',
-        '$4',
-        $5
+        %s, 
+        %s, 
+        %s,
+        %s,
+        %s
     ) RETURNING id;
     """
 
-    records = database_query(query, (genre_id, name, description, creator, paths))
+    records = database_query(
+        query, (genre_id, name, description, creator, json.dumps(paths))
+    )
 
     return str(records[0]), 200
 

@@ -17,6 +17,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "flask-cors"
+sections = ["default"]
+version = "3.0.10"
+summary = "A Flask extension adding a decorator for CORS support"
+dependencies = [
+    "Flask>=0.9",
+    "Six",
+]
+
+[[package]]
 name = "gunicorn"
 sections = ["default"]
 version = "20.1.0"
@@ -59,6 +69,12 @@ version = "56.0.0"
 summary = "Easily download, build, install, upgrade, and uninstall Python packages"
 
 [[package]]
+name = "Six"
+sections = ["default"]
+version = "1.15.0"
+summary = "Python 2 and 3 compatibility utilities"
+
+[[package]]
 name = "Werkzeug"
 sections = ["default"]
 version = "1.0.1"
@@ -66,7 +82,7 @@ summary = "The comprehensive WSGI web application library."
 
 [metadata]
 lock_version = "2"
-content_hash = "sha256:ce39ef1d4b2a23129bf4e2034067aeb5f75613820e6f9b38dcf3fec5df9815a9"
+content_hash = "sha256:230616c7672d0bfd723cbe62e5410183d8aaec3a23eabdc5f724497b77fa5ed3"
 
 [metadata.files]
 "click 7.1.2" = [
@@ -76,6 +92,10 @@ content_hash = "sha256:ce39ef1d4b2a23129bf4e2034067aeb5f75613820e6f9b38dcf3fec5d
 "flask 1.1.2" = [
     {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
     {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
+]
+"flask-cors 3.0.10" = [
+    {file = "Flask_Cors-3.0.10-py2.py3-none-any.whl", hash = "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438"},
+    {file = "Flask-Cors-3.0.10.tar.gz", hash = "sha256:b60839393f3b84a0f3746f6cdca56c1ad7426aa738b70d6c61375857823181de"},
 ]
 "gunicorn 20.1.0" = [
     {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
@@ -183,6 +203,10 @@ content_hash = "sha256:ce39ef1d4b2a23129bf4e2034067aeb5f75613820e6f9b38dcf3fec5d
 "setuptools 56.0.0" = [
     {file = "setuptools-56.0.0-py3-none-any.whl", hash = "sha256:7430499900e443375ba9449a9cc5d78506b801e929fef4a186496012f93683b5"},
     {file = "setuptools-56.0.0.tar.gz", hash = "sha256:08a1c0f99455307c48690f00d5c2ac2c1ccfab04df00454fef854ec145b81302"},
+]
+"six 1.15.0" = [
+    {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
+    {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 "werkzeug 1.0.1" = [
     {file = "Werkzeug-1.0.1-py2.py3-none-any.whl", hash = "sha256:2de2a5db0baeae7b2d2664949077c2ac63fbd16d98da0ff71837f7d1dea3fd43"},
